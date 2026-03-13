@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PDF AI Chatbot</title>
+</head>
+
+<body>
+
+<h2>Upload PDF</h2>
+
+<input type="file" id="file">
+<button onclick="upload()">Upload</button>
+
+<h2>Ask Question</h2>
+
+<input type="text" id="question">
+<button onclick="ask()">Ask</button>
+
+<p id="answer"></p>
+
+<script>
+
+async function upload(){
+
+let file = document.getElementById("file").files[0];
+
+let formData = new FormData();
+formData.append("file", file);
+
+await fetch("/upload",{
+method:"POST",
+body:formData
+});
+
+alert("PDF Uploaded");
+
+}
+
+async function ask(){
+
+let q = document.getElementById("question").value;
+
+let response = await fetch(`/ask?question=${q}`);
+
+let data = await response.json();
+
+document.getElementById("answer").innerText = data.answer;
+
+}
+
+</script>
+
+</body>
+</html>
